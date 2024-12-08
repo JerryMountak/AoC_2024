@@ -1,3 +1,5 @@
+import time
+
 # Part 1
 left = []
 right = []
@@ -13,6 +15,7 @@ with open('input.txt') as input:
         left.append(a)
         right.append(b)
 
+time_start = time.time()
 # Sort the lists
 left.sort()
 right.sort()
@@ -21,11 +24,13 @@ res = 0
 for i,j in zip(left, right):
     res += abs(i - j)
 
-print(f'Part 1: {res}')
+time_end = time.time()
+print(f'Part 1: {res},\t{time_end - time_start:.3f}s')
 
 
 # Part 2
 # Calculate the number frequency in the right list
+time_start = time.time()
 freq = {}
 for i in right:
     if i in freq:
@@ -39,4 +44,5 @@ for i in left:
     if i in freq:
         res += i*freq[i]
 
-print(f'Part 2: {res}')
+time_end = time.time()
+print(f'Part 2: {res},\t{time_end - time_start:.3f}s')

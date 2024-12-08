@@ -1,3 +1,5 @@
+import time
+
 # Function to check if a list conforms to a rule
 def check_ordering(rule, nums):
     seen_rule_first = False
@@ -25,6 +27,7 @@ with open('input.txt') as file:
         else:
             updates.append(list(map(int, line.split(','))))
 
+time_start = time.time()
 valid_updates = []
 has_rules = []
 
@@ -56,7 +59,8 @@ for i,update in enumerate(updates):
     if valid_updates[i]:
         ans += update[len(update)//2]
 
-print(f"Part 1: {ans}")
+time_end = time.time()
+print(f"Part 1: {ans},\t{time_end - time_start:.3f}s")
 
 
 # Part 2
@@ -69,7 +73,7 @@ def fix_ordering(rule, nums):
     nums.pop(ind_pop)
     nums.insert(ind_ins, rule[0])
 
-
+time_start = time.time()
 res = []
 for i,update in enumerate(updates):
     if not valid_updates[i]:
@@ -99,4 +103,5 @@ ans = 0
 for update in res:
     ans += update[len(update)//2]
 
-print(f"Part 2: {ans}")
+time_end = time.time()
+print(f"Part 2: {ans},\t{time_end - time_start:.3f}s")

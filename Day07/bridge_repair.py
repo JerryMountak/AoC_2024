@@ -1,5 +1,5 @@
 from itertools import product
-from tqdm import tqdm
+import time
 
 def eval_expression(values, operators):
     ops = {
@@ -13,8 +13,6 @@ def eval_expression(values, operators):
         res = ops[operator](res, value)
 
     return res
-   
-
 
 def is_eq_true(equation, operators):
     res, values = equation
@@ -41,23 +39,26 @@ with open('input.txt') as f:
 
         equations.append((int(res), tuple(map(int, values))))
 
+time_start = time.time()
 ans = 0
-for equation in tqdm(equations):
+for equation in equations:
     res, values = equation
 
     if is_eq_true(equation, ['+','*']):
         ans += res
 
-print(f'Part 1: {ans}')
+time_end = time.time()
+print(f'Part 1: {ans},\t{time_end - time_start:.3f}s')
 
 
 # Part 2
-
+time_start = time.time()
 ans = 0
-for equation in tqdm(equations):
+for equation in equations:
     res, values = equation
     
     if is_eq_true(equation, ['+','*','||']):
         ans += res
 
-print(f'Part 2: {ans}')
+time_end = time.time()
+print(f'Part 2: {ans},\t{time_end - time_start:.3f}s')

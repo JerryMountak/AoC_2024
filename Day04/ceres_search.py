@@ -1,4 +1,5 @@
 import numpy as np
+import time
 import re
 
 def find_xmas(text):
@@ -18,6 +19,7 @@ with open('input.txt') as file:
         for j in range(len(text[0])):
             text_arr[i][j] = text[i][j]
 
+time_start = time.time()
 # Convert the text array to a list of strings splitting in lines, columns and diagonals
 lines = [''.join(line) for line in text_arr]
 lines_reversed = [line[::-1] for line in lines]
@@ -49,7 +51,8 @@ for ortho_diag in orthogonal_diags:
 for ortho_diag in orthogonal_diags_reversed:
     res += find_xmas(ortho_diag)
 
-print(f'Part 1: {res}')
+time_end = time.time()
+print(f'Part 1: {res},\t{time_end - time_start:.3f}s')
 
 
 # Part 2
@@ -59,7 +62,8 @@ def find_x_mas_sliding(text):
     if ''.join(text.diagonal(0)) in acceptable and ''.join(text[::-1].diagonal(0)) in acceptable:
         return 1
     return 0
-    
+
+time_start = time.time()
 res = 0
 # Iterate the text array using a sliding window of size 3*3
 for i in range(len(text_arr)-2):
@@ -68,4 +72,5 @@ for i in range(len(text_arr)-2):
 
         res += find_x_mas_sliding(window)
 
-print(f'Part 2: {res}')
+time_end = time.time()
+print(f'Part 2: {res},\t{time_end - time_start:.3f}s')

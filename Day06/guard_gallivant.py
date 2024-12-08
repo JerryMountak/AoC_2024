@@ -1,4 +1,5 @@
 from copy import deepcopy
+import time
 import sys
 sys.path.append('..')
 from utils import Direction
@@ -45,13 +46,17 @@ with open('input.txt') as f:
             guard_pos = (i, line.index('^'))
         
         lab_map.append(line)
-        
+
+time_start = time.time()
 visited = set()
 traverse(lab_map, guard_pos, visited)
-print(f'Part 1: {len(visited)}')
+
+time_end = time.time()
+print(f'Part 1: {len(visited)},\t{time_end - time_start:.3f}s')
 
 
 # Part 2
+time_start = time.time()
 res = 0
 visited.remove(guard_pos)
 for x,y in visited:
@@ -63,4 +68,5 @@ for x,y in visited:
     except LoopException:
         res += 1
 
-print(f'Part 2: {res}')
+time_end = time.time()
+print(f'Part 2: {res},\t{time_end - time_start:.3f}s')

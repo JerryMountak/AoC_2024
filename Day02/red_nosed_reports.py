@@ -1,3 +1,5 @@
+import time
+
 def check_report(report):
     diffs = [abs(a - b) for a,b in zip(report, report[1:])]
 
@@ -21,6 +23,7 @@ with open('input.txt') as f:
     for line in lines:
         reports.append(list(map(int, line.split())))
 
+time_start = time.time()
 safe_reports = 0
 
 # Check each report
@@ -30,10 +33,12 @@ for report in reports:
     if safe:
         safe_reports += 1
 
-print(f'Part 1: {safe_reports}')
+time_end = time.time()
+print(f'Part 1: {safe_reports},\t{time_end - time_start:.3f}s')
 
 
 # Part 2
+time_start = time.time()
 safe_reports = 0
 
 for report in reports:
@@ -83,4 +88,5 @@ for report in reports:
                     flag = True
                     break
 
-print(f'Part 2: {safe_reports}')
+time_end = time.time()
+print(f'Part 2: {safe_reports},\t{time_end - time_start:.3f}s')

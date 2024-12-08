@@ -1,3 +1,4 @@
+import time
 import re
 
 # Match muls and do/don't using regex
@@ -21,6 +22,7 @@ def match_muls(input, extended=False):
 with open('input.txt') as f:
     input = f.read()
 
+time_start = time.time()
 # Match only muls for part 1
 nums = match_muls(input)
 
@@ -28,10 +30,12 @@ ans = 0
 for pair in nums:
     ans += pair[0] * pair[1]
 
-print(f'Part 1: {ans}')
+time_end = time.time()
+print(f'Part 1: {ans},\t{time_end - time_start:.3f}s')
 
 
 # Part 2
+time_start = time.time()
 # Match muls and do/don't operations
 dirs = match_muls(input, extended=True)
 
@@ -46,4 +50,5 @@ for dir in dirs:
         if type(dir) is not bool:
             ans += dir[0] * dir[1]
 
-print(f'Part 2: {ans}')
+time_end = time.time()
+print(f'Part 2: {ans},\t{time_end - time_start:.3f}s')
