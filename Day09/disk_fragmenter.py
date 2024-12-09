@@ -1,39 +1,8 @@
 from copy import deepcopy
 import time
 
-# Function to create the expanded representation of the disk map
-def expand(disk_map):
-    expanded = []
-    id = 0
-    for i,block in enumerate(disk_map):
-        if i%2 == 0:
-            for _ in range(block):
-                expanded.append(str(id))
-            id += 1
-        else:
-            for _ in range(block):
-                expanded.append('.')
-
-    return expanded
-
-# Function to defrag the expanded disk map moving individual blocks
-def rearrange_blocks(expanded_map):
-    blocks = deepcopy(expanded_map)
-    filled_blocks = sum(True for block in expanded_map if block != '.')
-
-    while True:
-        i = next(i for i,v in enumerate(blocks) if v == '.')
-        if i < filled_blocks:
-            j = next(len(blocks)-i-1 for i,v in enumerate(blocks[::-1]) if v != '.')
-
-            blocks[i], blocks[j] = blocks[j], blocks[i]
-        else:
-            break
-    
-    return blocks
-
 # Function to get the filled and empty block details of the disk map
-def get_disk_status(disk_map):
+def get_disk_status(disk_map, expand=False):
     tmp = deepcopy(disk_map)
     filled = []
     empty = []
@@ -44,8 +13,32 @@ def get_disk_status(disk_map):
         else:
             empty.append((last_ind,block))
         last_ind += block
-    
+
+    if expand:
+        filled_expanded = []
+        for index,reps,value in filled:
+            filled_expanded.extend([(index+i,value) for i in range(reps)])
+        
+        filled = filled_expanded    
     return filled,empty
+
+# Function to defrag the disk map moving individual blocks
+def rearrange_blocks(disk_map):
+    blocks = deepcopy(disk_map)
+    filled, empty = get_disk_status(blocks, expand=True)
+    
+    for i,(index_b,value) in enumerate(filled[::-1]):
+        for j,(index_e,count) in enumerate(empty):
+            if index_b < index_e:
+                break
+            else:
+                if count == 0:
+                    continue
+                empty[j] = (index_e+1, count-1)
+                filled[len(filled)-i-1] = (index_e,value)
+                break
+
+    return filled
 
 # Function to defrag the disk map moving individual files
 def rearrange_files(disk_map):
@@ -67,10 +60,6 @@ def rearrange_files(disk_map):
 
     return filled
 
-# Function to calculate the checksum of the disk map
-def checksum(blocks):
-    return sum(int(block)*i for i,block in enumerate(blocks) if block != '.')
-
 # Function to calculate the sum of consecutive numbers
 def sum_consecutive(num, times):
     times = times - 1
@@ -85,16 +74,19 @@ with open('input.txt') as f:
         disk_map = list(map(int, line.strip()))
 
 time_start = time.time()
-ans = checksum(rearrange_blocks(expand(disk_map)))
+block_defrag = rearrange_blocks(disk_map)
+ans = 0
+for file in block_defrag:
+    ans += sum_consecutive(file[0],1)*file[1]
 time_end = time.time()
 print(f'Part 1: {ans},\t{time_end - time_start:.4f}s')
 
 
 # Part 2
 time_start = time.time()
-b = sorted(rearrange_files(disk_map), key=lambda x: x[0])
+file_defrag = rearrange_files(disk_map)
 ans = 0
-for file in b:
+for file in file_defrag:
     ans += sum_consecutive(file[0],file[1])*file[2]
 
 time_end = time.time()
