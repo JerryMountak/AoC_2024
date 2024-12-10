@@ -51,3 +51,26 @@ Direction.Down = Direction(1, 0)
 Direction.Left = Direction(0, -1)
 Direction.Right = Direction(0, 1)
 Direction._directions = [Direction.Up, Direction.Right, Direction.Down, Direction.Left]
+
+
+def get_neighbors(grid, x, y, value=None):
+    """Get the neighbors of a cell in a 2D grid.
+
+    Args:
+        grid (list[list[int]]): The 2D grid.
+        x (int): The x coordinate of the cell.
+        y (int): The y coordinate of the cell.
+
+    Returns:
+        list[int]: The neighbors of the cell.
+    """
+    neighbors = []
+    for dir in [Direction.Up, Direction.Right, Direction.Down, Direction.Left]:
+        dx, dy = dir.x, dir.y
+        if 0 <= x + dx < len(grid) and 0 <= y + dy < len(grid[0]):
+            if not value:
+                neighbors.append((x+dx, y+dy, grid[x + dx][y + dy]))
+            elif grid[x + dx][y + dy] == value:
+                neighbors.append((x+dx, y+dy, grid[x + dx][y + dy]))
+
+    return neighbors
